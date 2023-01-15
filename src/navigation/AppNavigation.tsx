@@ -1,33 +1,25 @@
-import React from 'react';
-import {SafeAreaView} from 'react-native';
+import React, {useMemo} from 'react';
 
 import {RootState} from '../redux/app/store';
 import {useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {IUser} from '../types/user/userType';
 import Login from '../screens/auth/Login';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from '../screens/home/HomeScreen';
-
-const App = createNativeStackNavigator();
+import {navigationRef} from './navigate';
+import HomeNavigation from './HomeNavigation';
 
 function AppNavigation() {
   const user: IUser | null = useSelector((state: RootState) => state.app.user);
 
-  if (user) {
-    return (
-      <NavigationContainer>
-        <App.Navigator>
-          <App.Screen name="Home" component={HomeScreen} />
-        </App.Navigator>
-      </NavigationContainer>
-    );
-  }
+  const AppStack = useMemo(() => {
+    if (!user) {
+      return <Login />;
+    }
+    return <HomeNavigation />;
+  }, [user]);
 
   return (
-    <SafeAreaView>
-      <Login />
-    </SafeAreaView>
+    <NavigationContainer ref={navigationRef}>{AppStack}</NavigationContainer>
   );
 }
 

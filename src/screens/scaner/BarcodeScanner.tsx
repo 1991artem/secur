@@ -8,11 +8,13 @@ import {
   PermissionsAndroid,
   Platform,
   StyleSheet,
+  Button,
+  Text,
 } from 'react-native';
-import {Button, Text} from '@rneui/themed';
 
 // import CameraScreen
 import {CameraScreen} from 'react-native-camera-kit';
+import TopBar from '../../components/TopBar';
 
 function BarcodeScanner() {
   const [qrvalue, setQrvalue] = useState('');
@@ -58,6 +60,7 @@ function BarcodeScanner() {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <TopBar />
       {isOpen ? (
         <View style={{flex: 1}}>
           <CameraScreen
