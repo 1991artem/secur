@@ -3,20 +3,20 @@ import React, {useMemo} from 'react';
 import {RootState} from '../redux/app/store';
 import {useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
-import {IUser} from '../types/user/userType';
+import {ILogin} from '../types/user/userType';
 import Login from '../screens/auth/Login';
 import {navigationRef} from './navigate';
 import HomeNavigation from './HomeNavigation';
 
 function AppNavigation() {
-  const user: IUser | null = useSelector((state: RootState) => state.app.user);
+  const app: ILogin = useSelector((state: RootState) => state.app.app);
 
   const AppStack = useMemo(() => {
-    if (!user) {
+    if (!app.token) {
       return <Login />;
     }
     return <HomeNavigation />;
-  }, [user]);
+  }, [app]);
 
   return (
     <NavigationContainer ref={navigationRef}>{AppStack}</NavigationContainer>

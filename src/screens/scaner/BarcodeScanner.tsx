@@ -1,5 +1,5 @@
 // import React in our code
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 // import all the components we are going to use
 import {
@@ -7,27 +7,57 @@ import {
   View,
   PermissionsAndroid,
   Platform,
-  StyleSheet,
-  Button,
   Text,
+  ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
 
 // import CameraScreen
 import {CameraScreen} from 'react-native-camera-kit';
+import {Avatar, Button} from 'react-native-paper';
+import ModalWindow from '../../components/ModalWindow';
 import TopBar from '../../components/TopBar';
+import useAxios from '../../lib/hooks/useAxios';
+import {IUser} from '../../types/user/userType';
 
 function BarcodeScanner() {
   const [qrvalue, setQrvalue] = useState('');
-  const [isOpen, setOpenScanner] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [data, setData] = useState({} as IUser);
+  const {response, loading, fetchData} = useAxios({
+    method: 'post',
+    url: 'users/email',
+    body: {
+      email: qrvalue,
+    },
+  });
 
-  //   const onOpenlink = () => {
-  //     // If scanned then function to open URL in Browser
-  //     Linking.openURL(qrvalue);
-  //   };
+  useEffect(() => {
+    onOpenScanner();
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, [qrvalue]);
+
+  useEffect(() => {
+    if (response) {
+      setData(response);
+      setIsShowModal(true);
+      console.log(isShowModal);
+    }
+  }, [response]);
+
+  // useEffect(() => {
+  //   onOpenlink();
+  // }, [qrvalue]);
+
+  // const onOpenlink = () => {
+  //   Linking.openURL(qrvalue);
+  // };
 
   const onBarcodeScan = (value: string) => {
     setQrvalue(value);
-    setOpenScanner(false);
   };
 
   const onOpenScanner = () => {
@@ -41,7 +71,6 @@ function BarcodeScanner() {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             // If CAMERA Permission is granted
             setQrvalue('');
-            setOpenScanner(true);
           } else {
             alert('CAMERA permission denied');
           }
@@ -54,14 +83,16 @@ function BarcodeScanner() {
       requestCameraPermission();
     } else {
       setQrvalue('');
-      setOpenScanner(true);
     }
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#00ff00" />;
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <TopBar />
-      {isOpen ? (
+      {!isShowModal ? (
         <View style={{flex: 1}}>
           <CameraScreen
             showFrame={false}
@@ -78,25 +109,15 @@ function BarcodeScanner() {
           />
         </View>
       ) : (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text>{qrvalue}</Text>
-          <Button
-            title="Scan Code"
-            onPress={onOpenScanner}
-            iconContainerStyle={{marginRight: 10}}
-            titleStyle={{fontWeight: '700'}}
-            buttonStyle={{
-              backgroundColor: 'rgba(90, 154, 230, 1)',
-              borderColor: 'transparent',
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
-            containerStyle={{
-              width: 200,
-              marginHorizontal: 50,
-              marginVertical: 10,
-            }}
-          />
+        <View style={styles.container}>
+          <Avatar.Text size={50} label={data.name.slice(0, 2)} />
+          <Text style={{marginVertical: 20}}>Name: {data.name}</Text>
+          <Text style={{marginVertical: 2}}>Email: {data.email}</Text>
+          <Text style={{marginVertical: 2}}>Role: {data.role}</Text>
+          <Text style={{marginVertical: 2}}>Code: {data.code}</Text>
+          <Button mode="contained" onPress={() => setIsShowModal(false)}>
+            OK
+          </Button>
         </View>
       )}
     </SafeAreaView>
@@ -107,37 +128,10 @@ export default BarcodeScanner;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
+    height: '100%',
     backgroundColor: 'white',
-    padding: 10,
     alignItems: 'center',
-  },
-  titleText: {
-    fontSize: 22,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  textStyle: {
-    color: 'black',
-    fontSize: 16,
-    textAlign: 'center',
-    padding: 10,
-    marginTop: 16,
-  },
-  buttonStyle: {
-    fontSize: 16,
-    color: 'white',
-    backgroundColor: 'green',
-    padding: 5,
-    minWidth: 250,
-  },
-  buttonTextStyle: {
-    padding: 5,
-    color: 'white',
-    textAlign: 'center',
-  },
-  textLinkStyle: {
-    color: 'blue',
-    paddingVertical: 20,
+    justifyContent: 'center',
   },
 });

@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {useState} from 'react';
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:4500/api/v1/';
+axios.defaults.baseURL = 'http://192.168.0.100:4500/api/v1/';
 
 interface IAxiosParams {
   url: string;
@@ -31,6 +30,7 @@ const useAxios = ({
         setResponse(res.data);
       })
       .catch(err => {
+        console.log(err);
         setError(err.message);
       })
       .finally(() => {

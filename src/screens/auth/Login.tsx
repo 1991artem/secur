@@ -1,9 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity, Text, View, ActivityIndicator} from 'react-native';
+import {Text, View, ActivityIndicator} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/app/slice';
-import {IUser} from '../../types/user/userType';
+import {ILogin} from '../../types/user/userType';
 import {useEffect, useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import useAxios from '../../lib/hooks/useAxios';
@@ -22,19 +22,22 @@ function Login() {
   });
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (response) {
-      setToken(response.token);
-      dispatch(login(user));
-      setPassword('');
-      setEmail('');
-    }
-  }, [response]);
-
-  const user: IUser = {
+  const user: ILogin = {
     email,
     token,
   };
+
+  useEffect(() => {
+    if (response) {
+      setToken(response.token);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    dispatch(login(user));
+    setPassword('');
+    setEmail('');
+  }, [token]);
 
   const emailHandler = (value: string) => {
     setEmail(value);
