@@ -7,6 +7,7 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import AppNavigation from './navigation/AppNavigation';
+import axios from 'axios';
 
 const theme = {
   ...DefaultTheme,
@@ -16,6 +17,12 @@ const theme = {
     secondary: 'yellow',
   },
 };
+
+// const httpAxios = axios.create({
+//   baseURL: 'http://localhost:4500/api/v1',
+//   timeout: 1000,
+//   headers: {'Content-Type': 'application/json'},
+// });
 
 function App(): JSX.Element {
   return (
@@ -28,3 +35,5 @@ function App(): JSX.Element {
 }
 
 export default App;
+
+// export {httpAxios};
