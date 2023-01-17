@@ -3,6 +3,7 @@ export interface IUser {
   name: string;
   role: string;
   code: string;
+  avatar: string;
 }
 
 export interface ILogin {

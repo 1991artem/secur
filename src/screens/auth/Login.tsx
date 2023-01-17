@@ -1,12 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text, View, ActivityIndicator} from 'react-native';
+import {View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/app/slice';
 import {ILogin} from '../../types/user/userType';
 import {useEffect, useState} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import useAxios from '../../lib/hooks/useAxios';
+import Error from '../../components/Error';
+import Loader from '../../components/Loader';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -52,24 +55,16 @@ function Login() {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#00ff00" />;
+    return <Loader />;
   }
 
   if (error) {
-    return (
-      <SafeAreaView style={{alignItems: 'center', top: '50%'}}>
-        <View style={{width: '80%', height: '50%'}}>
-          <Text style={{marginBottom: 20}}>{error}</Text>
-          <Button mode="contained" onPress={resetError}>
-            Try again
-          </Button>
-        </View>
-      </SafeAreaView>
-    );
+    return <Error message={error} resetError={resetError} />;
   }
 
   return (
-    <SafeAreaView style={{height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+    <SafeAreaView
+      style={{height: '100%', alignItems: 'center', justifyContent: 'center'}}>
       <View style={{width: '80%'}}>
         <TextInput
           label="Email"
@@ -81,6 +76,7 @@ function Login() {
           style={{marginBottom: 20}}
           secureTextEntry
           onChangeText={passwordHandler}
+          right={<TextInput.Affix text="/100" />}
         />
         <Button mode="contained" onPress={bthHandler}>
           Login

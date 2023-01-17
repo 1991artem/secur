@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 // import React in our code
 import React, {useEffect, useState} from 'react';
 
@@ -8,17 +10,21 @@ import {
   PermissionsAndroid,
   Platform,
   Text,
-  ActivityIndicator,
   StyleSheet,
+  Alert,
 } from 'react-native';
 
 // import CameraScreen
 import {CameraScreen} from 'react-native-camera-kit';
 import {Avatar, Button} from 'react-native-paper';
-import ModalWindow from '../../components/ModalWindow';
+import BottomBar from '../../components/BottomBar';
+import Loader from '../../components/Loader';
 import TopBar from '../../components/TopBar';
 import useAxios from '../../lib/hooks/useAxios';
+import {NavigationRoutes} from '../../types/routes';
 import {IUser} from '../../types/user/userType';
+
+const serverIsWorking = false;
 
 function BarcodeScanner() {
   const [qrvalue, setQrvalue] = useState('');
@@ -34,7 +40,7 @@ function BarcodeScanner() {
 
   useEffect(() => {
     onOpenScanner();
-  });
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -44,7 +50,6 @@ function BarcodeScanner() {
     if (response) {
       setData(response);
       setIsShowModal(true);
-      console.log(isShowModal);
     }
   }, [response]);
 
@@ -72,10 +77,10 @@ function BarcodeScanner() {
             // If CAMERA Permission is granted
             setQrvalue('');
           } else {
-            alert('CAMERA permission denied');
+            Alert.alert('CAMERA permission denied');
           }
-        } catch (err) {
-          alert('Camera permission err', err);
+        } catch (err: any) {
+          Alert.alert('Camera permission err', err.message);
           console.warn(err);
         }
       }
@@ -87,15 +92,19 @@ function BarcodeScanner() {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#00ff00" />;
+    return <Loader />;
   }
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <TopBar title={'home'} back={NavigationRoutes.HOME_SCREEN} />
       {!isShowModal ? (
         <View style={{flex: 1}}>
+          {!serverIsWorking && (
+            <Text style={{marginVertical: 20, textAlign: 'center'}}>{qrvalue}</Text>
+          )}
           <CameraScreen
-            showFrame={false}
+            showFrame={true}
             // Show/hide scan frame
             scanBarcode={true}
             // Can restrict for the QR Code only
@@ -120,6 +129,7 @@ function BarcodeScanner() {
           </Button>
         </View>
       )}
+      <BottomBar />
     </SafeAreaView>
   );
 }

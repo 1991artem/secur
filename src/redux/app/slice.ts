@@ -9,14 +9,15 @@ export interface AppState {
 
 const initialState: AppState = {
   app: {
-    email: '',
-    token: '',
+    email: 'admin@gmail.com',
+    token: '12345678',
   },
   user: {
-    email: '',
-    name: '',
-    role: '',
-    code: '',
+    email: 'admin@gmail.com',
+    name: 'Artem',
+    role: 'admin',
+    code: '3750000000',
+    avatar: '',
   },
 };
 

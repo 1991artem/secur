@@ -30,6 +30,7 @@
 		00E356EE1AD99517003FC87E /* secur_appTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = secur_appTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* secur_appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = secur_appTests.m; sourceTree = "<group>"; };
+		0EAD88CE2977245A00AC2CC3 /* secur_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = secur_app.entitlements; path = secur_app/secur_app.entitlements; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* secur_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = secur_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = secur_app/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = secur_app/AppDelegate.mm; sourceTree = "<group>"; };
@@ -86,6 +87,7 @@
 		13B07FAE1A68108700A75B9A /* secur_app */ = {
 			isa = PBXGroup;
 			children = (
+				0EAD88CE2977245A00AC2CC3 /* secur_app.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -200,6 +202,10 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+					"New-1",
+				);
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -484,11 +490,14 @@
 			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-secur_app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LXNQD63696;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = secur_app/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Hello;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -513,10 +522,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LXNQD63696;
 				INFOPLIST_FILE = secur_app/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
