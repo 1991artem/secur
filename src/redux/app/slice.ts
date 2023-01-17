@@ -7,19 +7,35 @@ export interface AppState {
   user: IUser;
 }
 
-const initialState: AppState = {
-  app: {
-    email: 'admin@gmail.com',
-    token: '12345678',
-  },
-  user: {
-    email: 'admin@gmail.com',
-    name: 'Artem',
-    role: 'admin',
-    code: '3750000000',
-    avatar: '',
-  },
-};
+export const workWithServer = false;
+
+const initialState: AppState = !workWithServer
+  ? {
+      app: {
+        email: 'admin@gmail.com',
+        token: '12345678',
+      },
+      user: {
+        email: 'admin@gmail.com',
+        name: 'Artem',
+        role: 'admin',
+        code: '3750000000',
+        avatar: '',
+      },
+    }
+  : {
+      app: {
+        email: '',
+        token: '',
+      },
+      user: {
+        email: '',
+        name: '',
+        role: '',
+        code: '',
+        avatar: '',
+      },
+    };
 
 export const appSlice = createSlice({
   name: 'app',

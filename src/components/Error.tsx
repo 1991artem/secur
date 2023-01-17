@@ -10,7 +10,7 @@ function Error({message, resetError}: IErrorPage) {
     <SafeAreaView style={{alignItems: 'center', top: '50%'}}>
       <View style={{width: '80%', height: '50%'}}>
         <Text style={{marginBottom: 20}}>{message}</Text>
-        <Button mode="contained" onPress={resetError}>
+        <Button mode="contained" title="Try again" onPress={resetError}>
           Try again
         </Button>
       </View>
