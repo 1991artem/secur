@@ -1,4 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
+import {ParamListBase} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/home/HomeScreen';
 import UserInfo from '../screens/info/UserInfo';
@@ -6,7 +7,7 @@ import ReaderScreen from '../screens/reader/ReaderScreen';
 import BarcodeScanner from '../screens/scaner/BarcodeScanner';
 import {NavigationRoutes} from '../types/routes';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<ParamListBase>();
 
 function HomeNavigation() {
   return (

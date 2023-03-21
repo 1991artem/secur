@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import {useEffect, useState} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import NfcManager, {Ndef, NfcEvents, NfcTech} from 'react-native-nfc-manager';
@@ -12,10 +13,7 @@ function ReaderScreen() {
 
   useEffect(() => {
     const checkIsSupported = async () => {
-      const deviceIsSupported = await NfcManager.isSupported(
-        NfcTech.Iso15693IOS,
-      );
-      console.log(deviceIsSupported);
+      const deviceIsSupported = await NfcManager.isSupported();
       setHasNFC(deviceIsSupported);
       if (deviceIsSupported) {
         await NfcManager.start();
@@ -36,18 +34,42 @@ function ReaderScreen() {
   // }, []);
 
   // const readTag = async () => {
-  //   await NfcManager.registerTagEvent();
+  //   // await NfcManager.registerTagEvent();
+  //   const result = await readMifare();
+  //   setCode(result.toString());
+  // };
+
+  // const readMifare = async () => {
+  //   let mifarePages = [];
+  //   try {
+  //     // STEP 1
+  //     let reqMifare = await NfcManager.requestTechnology(
+  //       NfcTech.MifareUltralight,
+  //     );
+  //     const readLength = 60;
+  //     const mifarePagesRead = await Promise.all(
+  //       [...Array(readLength).keys()].map(async (_, i) => {
+  //         const pages = await NfcManager.mifareUltralightHandlerAndroid // STEP 2
+  //           .mifareUltralightReadPages(i * 4); // STEP 3
+  //         mifarePages.push(pages);
+  //       }),
+  //     );
+  //   } catch (ex) {
+  //     console.warn(ex);
+  //   } finally {
+  //     // STEP 4
+  //     NfcManager.cancelTechnologyRequest();
+  //   }
+  //   return mifarePages.join('');
   // };
 
   const writeNFC = async () => {
     let result = false;
 
     try {
-      await NfcManager.requestTechnology(NfcTech.Ndef);
+      await NfcManager.requestTechnology(NfcTech.MifareClassic);
 
-      const bytes = Ndef.encodeMessage([
-        Ndef.uriRecord('https://blog.logrocket.com/'),
-      ]);
+      const bytes = Ndef.encodeMessage([Ndef.textRecord('3756353702')]);
 
       if (bytes) {
         await NfcManager.ndefHandler.writeNdefMessage(bytes);
@@ -59,10 +81,6 @@ function ReaderScreen() {
       NfcManager.cancelTechnologyRequest();
     }
   };
-
-  if (hasNfc === null) {
-    return null;
-  }
 
   if (!hasNfc) {
     return (
@@ -80,10 +98,13 @@ function ReaderScreen() {
     <SafeAreaView style={styles.container}>
       <TopBar title={'reader'} back={NavigationRoutes.HOME_SCREEN} />
       <View style={styles.screen}>
-        <Text>{code}</Text>
-        <Button mode="contained" onPress={writeNFC}>
+        <Text style={styles.text}>{code}</Text>
+        <Button style={styles.button} mode="contained" onPress={writeNFC}>
           Read
         </Button>
+        {/* <Button style={styles.button} mode="contained" onPress={readTag}>
+          Read card
+        </Button> */}
       </View>
       <BottomBar />
     </SafeAreaView>
@@ -103,7 +124,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  infoItem: {
-    width: '80%',
+  button: {
+    marginVertical: 2,
+  },
+  text: {
+    marginVertical: 5,
   },
 });
